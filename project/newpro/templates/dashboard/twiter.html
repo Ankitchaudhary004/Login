@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+{% load socialaccount %} {% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Twitter Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/test.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+
+  <body>
+    
+
+    <div class="app-container">
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <div class="app-icon">
+            <img
+              src="{% static 'images/x.png' %}"
+              alt="Icon"
+              style="height: 40px; width: 100%"
+            />
+          </div>
+        </div>
+        <ul class="sidebar-list">
+          <li class="sidebar-list-item active">
+            <a href="#">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-shopping-bag"
+              >
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <path d="M16 10a4 4 0 0 1-8 0" />
+              </svg>
+              <span>Twitter</span>
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+          <a href="{% url 'account_logout' %}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-log-out">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            <span>Logout</span>
+          </a>
+        </li>
+        </ul>
+      </div>
+
+      <div class="app-content">
+        <div class="app-content-header">
+          <span style="font-size: 16px">⭐</span>
+          <h1 class="app-content-headerText">Twitter Dashboard</h1>
+          <button class="mode-switch" title="Switch Theme">
+            <svg
+              class="moon"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="dashboard-container" id="dashboard">
+          <div class="content">
+            <!-- Twitter Profile Card -->
+            <div
+              class="max-w-sm mx-auto mt-10 bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300"
+            >
+              <div
+                class="flex flex-col items-center p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+              >
+                <img
+                  class="w-24 h-24 rounded-full border-4 border-white shadow-lg object-cover"
+                  src="{{ extra_data.profile_image_url_https }}"
+                  alt="Profile Image"
+                />
+                <h2 class="text-xl font-semibold mt-3">
+                  {{ extra_data.name }}
+                </h2>
+                <p class="text-sm opacity-90">@{{ extra_data.screen_name }}</p>
+              </div>
+
+              <div class="p-6 space-y-4">
+                <div class="text-gray-700 text-sm">
+                  {% if extra_data.description %} "{{ extra_data.description }}"
+                  {% else %}
+                  <em>No bio available.</em>
+                  {% endif %}
+                </div>
+
+                <div class="text-sm text-gray-600 flex items-center space-x-2">
+                  {% if extra_data.location %}
+                  <span>📍 {{ extra_data.location }}</span>
+                  {% else %}
+                  <span>🌐 Location not specified</span>
+                  {% endif %}
+                </div>
+
+                <div class="grid grid-cols-3 gap-2 text-center text-sm">
+                  <div>
+                    <div class="text-lg font-bold text-gray-800">
+                      {{ extra_data.followers_count }}
+                    </div>
+                    <div class="text-gray-500">Followers</div>
+                  </div>
+                  <div>
+                    <div class="text-lg font-bold text-gray-800">
+                      {{ extra_data.friends_count }}
+                    </div>
+                    <div class="text-gray-500">Following</div>
+                  </div>
+                  <div>
+                    <div class="text-lg font-bold text-gray-800">
+                      {{ extra_data.statuses_count }}
+                    </div>
+                    <div class="text-gray-500">Tweets</div>
+                  </div>
+                </div>
+
+                {% if extra_data.status %}
+                <div
+                  class="bg-gray-100 rounded-lg p-3 shadow-inner text-sm text-gray-800"
+                >
+                  <strong class="block mb-1 text-blue-500"
+                    >Latest Tweet:</strong
+                  >
+                  {{ extra_data.status.text }}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="sidebar-pro">
+            <button
+              onclick="window.location.href='https://Twitter.com/{{ user.username }}'"
+            >
+              Twitter Profile
+            </button>
+            <button onclick="showFollowers({{ extra_data.followers_count }})">
+              Followers
+            </button>
+            <button onclick="showFollowing({{ extra_data.friends_count }})">
+              Following
+            </button>
+            <button onclick="showTweets({{ extra_data.statuses_count }})">
+              Tweets
+            </button>
+            
+          </div>
+        </div>
+        <div class="modal" id="followingModal">
+          <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">×</span>
+            <h2>Following</h2>
+            <div class="following-cards" id="followingList"></div>
+          </div>
+        </div>
+        <div id="popup" class="popup">
+          <div class="popup-content">
+            <span class="close-btn" onclick="closePopup()">&times;</span>
+            <p id="followersText"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="{% static 'js/test.js' %}"></script>
+  </body>
+</html>

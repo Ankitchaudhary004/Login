@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+{% load socialaccount %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #1a1a1a;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: #8604f8;
+            border-radius: 8px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 5px 15px 6px rgb(53, 53, 53);
+            box-sizing: border-box;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #d4a2ff;
+            border: none;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #394141;
+            color: #fff;
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #013829;
+        }
+
+        .name {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .name input {
+            flex: 1 1 45%;
+            min-width: 0;
+        }
+
+        a {
+            text-align: center;
+            display: block;
+            margin-top: 10px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 500px) {
+            .name {
+                flex-direction: column;
+            }
+
+            .name input {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Sign Up</h1>
+        <form>
+            <input type="email" class="email" placeholder="Email" required>
+            <div class="name">
+                <input type="text" class="first" placeholder="First Name" required>
+                <input type="text" class="last" placeholder="Last Name" required>
+            </div>
+            <button type="submit">Sign Up</button>
+            <a href="{% provider_login_url 'github' process='login' next='/profile/' %}">Login with GitHub</a>
+            <a href="{% provider_login_url 'twitter' process='login' next='/profile/' %}">Login with Twitter</a>
+            
+        </form>
+    </div>
+
+</body>
+</html>
